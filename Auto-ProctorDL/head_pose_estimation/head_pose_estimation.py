@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 
 import cv2
 import numpy as np
@@ -152,10 +152,10 @@ while True:
                 # print('div by zero error')
             if ang1 >= 48:
                 print('Head down')
-                cv2.putText(img, 'Head down', (30, 30), font, 2, (255, 255, 128), 3)
+              #  cv2.putText(img, 'Head down', (30, 30), font, 2, (255, 255, 128), 3)
             elif ang1 <= -48:
                 print('Head up')
-                cv2.putText(img, 'Head up', (30, 30), font, 2, (255, 255, 128), 3)
+               # cv2.putText(img, 'Head up', (30, 30), font, 2, (255, 255, 128), 3)
              
             if ang2 >= 48:
                 print('Head right')

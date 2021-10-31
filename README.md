@@ -1,6 +1,6 @@
 # Hackout
 ### Problem Statement : 
-The onset of the pandemic has caused a paradigm shift in the way education is conducted. We have seen schools and colleges conducting classes online, and face various problems in operating as smoothly as they did traditionally. One of the factors which hinders this, is the lack of an effective proctoring system for exams conducted remotely. As part of this task, participants have to create an effective exam proctoring system to detect malpractices during conduction of an online exam.
+The onset of the pandemic has caused a paradigm shift in the way education is conducted. We have seen schools and colleges conducting classes online, and face various problems in operating as smoothly as they did traditionally. One of the factors which hinders this, is the lack of an effective proctoring system for exams conducted remotely. Taking up this challenge we propose to make a effective exam proctoring system, which is fool-proof and has extra dimension of proctoring..
 
 
 
@@ -16,22 +16,62 @@ The COVID-19 pandemic has seen the rapid but sometimes controversial take-up of 
 <img src="image/cheating_ways.png" width="800" height="300">
 
 
+
+
 # Auto-Proctoring
 
 
 #### Person And Phone Detection.
+- Trained COCO-128 dataset
+- This file uses, YOLv5 model, trained on COCO dataset. 
 
+<img src="image/detection.gif" width="400" height="300">
 
 #### Mouth Opening Detection
 
+- Used pre-trained-CNN to detect 128 facial keypoints
+- Predict mouth opening or close by setting threshold distance
 
 #### Distraction Detector
+- Used pre-trained-CNN to detect 128 facial keypoints
+- Use Mutual PNP algorithm to detect alignment of head
+- If head is aligned more than 45* in either direction, candidate is distracted
 
 
-# Background tasks
+Below are the steps to run, AutoProctor, files in this link <a>https://drive.google.com/drive/folders/1ogj84EQ2wK9JjGCZYQIa5P-yIVJ6ABZR</a>
+
+Subset of files are present in AutoProctor directory, because of github file size limit.
+
+### Steps to run:
+Step 1: Crete virutal environment using ```python -m venv env```
+
+Step 2: Activate virtual environment using: ```env\Scripts\activate.bat```
+
+Step 3: ```pip install -r requirements.txt```
+
+Step 4: ```python detect.py --source 0```
+
+# Manual-Proctoring: Anonymize face for privacy
+<img src="image/blur_singhal.gif" width="400" height="300">
+
+Below are the steps to run, Manual, files in the github directory /Manual_Proctor
+
+Subset of files are present in AutoProctor directory, because of github file size limit.
+
+### Steps to run:
+Step 1: Crete virutal environment using ```python -m venv env```
+
+Step 2: Activate virtual environment using: ```env\Scripts\activate.bat```
+
+Step 3: ```python privacy_face_blur.py ```
+
+
+# TaskMan: Monitor Background task
 
 ### Flowchart of working
 <img src="image/flowchar_taskman.png" width="600" height="400">
+
+
 
 
 

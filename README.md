@@ -52,7 +52,7 @@ Step 3: ```pip install -r requirements.txt```
 Step 4: ```python detect.py --source 0```
 
 # Manual-Proctoring: Anonymize face for privacy
-<img src="image/blur_singhal.gif" width="400" height="300">
+<img src="image/blur_singhal.gif" width="500" height="300">
 
 Below are the steps to run, Manual, files in the github directory /Manual_Proctor
 

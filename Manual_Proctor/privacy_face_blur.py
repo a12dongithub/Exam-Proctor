@@ -19,14 +19,12 @@ def eye_on_mask(mask, side, shape):
         the facial landmark numbers of eyes
     shape : Array of uint32
         Facial landmarks
-
     Returns
     -------
     mask : np.uint8
         Mask with region of interest drawn
     [l, t, r, b] : list
         left, top, right, and bottommost points of ROI
-
     """
     points = [shape[i] for i in side]
     points = np.array(points, dtype=np.int32)
@@ -38,6 +36,34 @@ def eye_on_mask(mask, side, shape):
     b = (points[4][1]+points[5][1])//2
     return mask, [l, t, r, b]
 
+def mouth_on_mask(mask, side, shape):
+    """
+    Create ROI on mask of the size of mouth and also find the extreme points of each eye
+
+    Parameters
+    ----------
+    mask : np.uint8
+        Blank mask to draw eyes on
+    side : list of int
+        the facial landmark numbers of eyes
+    shape : Array of uint32
+        Facial landmarks
+    Returns
+    -------
+    mask : np.uint8
+        Mask with region of interest drawn
+    [l, t, r, b] : list
+        left, top, right, and bottommost points of ROI
+    """
+    points = [shape[i] for i in side]
+    points = np.array(points, dtype=np.int32)
+    mask = cv2.fillConvexPoly(mask, points, 255)
+    #print(rect)
+    l = points[0][0]
+    t = (points[1][1]+points[2][1])//2
+    r = points[3][0]
+    b = (points[4][1]+points[5][1])//2
+    return mask, [l, t, r, b]
 def find_eyeball_position(end_points, cx, cy):
     """Find and return the eyeball positions, i.e. left or right or top or normal"""
     x_ratio = (end_points[0] - cx)/(cx - end_points[2])
@@ -114,44 +140,11 @@ def process_thresh(thresh):
     thresh = cv2.bitwise_not(thresh)
     return thresh
 
-def print_eye_pos(img, left, right):
-    """
-    Print the side where eye is looking and display on image
-
-    Parameters
-    ----------
-    img : Array of uint8
-        Image to display on
-    left : int
-        Position obtained of left eye.
-    right : int
-        Position obtained of right eye.
-
-    Returns
-    -------
-    None.
-
-    """
-    if left == right and left != 0:
-        text = ''
-        if left == 1:
-            print('Looking left')
-            text = 'Looking left'
-        elif left == 2:
-            print('Looking right')
-            text = 'Looking right'
-        elif left == 3:
-            print('Looking up')
-            text = 'Looking up'
-        font = cv2.FONT_HERSHEY_SIMPLEX 
-        cv2.putText(img, text, (30, 30), font,  
-                   1, (0, 255, 255), 2, cv2.LINE_AA) 
-
 face_model = get_face_detector()
 landmark_model = get_landmark_model()
 left = [36, 37, 38, 39, 40, 41]
 right = [42, 43, 44, 45, 46, 47]
-
+mouth = [49, 50 ,51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67]
 cap = cv2.VideoCapture(0)
 ret, img = cap.read()
 thresh = img.copy()
@@ -215,38 +208,19 @@ while(True):
 
     
     for rect in rects:
-
         x=rect[0]
         y=rect[1]
-        h=rect[2]
-        w=rect[3]
-
-        #cv2.rectangle(img1,(x,y),(x+w,y+h),(255,0,0),3)
-        # Select only detected face portion for Blur
+        h=int(2*(rect[2])/3)
+        w=int(rect[3]/2)
         face_color = img1[y:y + h, x:x + w]
-        # Blur the Face with Gaussian Blur of Kernel Size 51*51
-        blur = cv2.GaussianBlur(face_color, (51, 51), 0)
+        blur = cv2.GaussianBlur(face_color, (71, 71), 0)
         img1[y:y + h, x:x + w] = blur
-
-        # box = rect * np.array([w, h, w, h])
-        # (startX, startY, endX, endY) = box.astype("int")
-		# # extract the face ROI
-        # face = img[startY:endY, startX:endX]
-        # print(img)
-        # #face = anonymize_face_simple(face, factor=3.0)
-		# # store the blurred face in the output image
-        # img1=img.copy()
-        # 
-        # image[startY:endY, startX:endX] = face
-
-
-
-        #print(rect)
         image=img.copy()
         shape = detect_marks(img, landmark_model, rect)
         mask = np.zeros(img.shape[:2], dtype=np.uint8)
         mask, end_points_left = eye_on_mask(mask, left, shape)
         mask, end_points_right = eye_on_mask(mask, right, shape)
+        mask, end_points_mouth = mouth_on_mask(mask, mouth, shape)
         mask = cv2.dilate(mask, kernel, 5)
         
         eyes = cv2.bitwise_and(img, img, mask=mask)
@@ -260,7 +234,6 @@ while(True):
         
         eyeball_pos_left = contouring(thresh[:, 0:mid], mid, img, end_points_left)
         eyeball_pos_right = contouring(thresh[:, mid:], mid, img, end_points_right, True)
-        #print_eye_pos(img, eyeball_pos_left, eyeball_pos_right)
         # for (x, y) in shape[36:48]:
         #     cv2.circle(img, (x, y), 2, (255, 0, 0), -1)
         mask2=thresh.copy()

@@ -41,7 +41,6 @@ The COVID-19 pandemic has seen the rapid but sometimes controversial take-up of 
 Below are the steps to run, AutoProctor.
 Subset of files are present in AutoProctor directory, because of github file size limit.
 
-Download all files from here https://drive.google.com/drive/folders/19NqlxuyvP2zRhPk53FGF-imhWS8rDwxl
 ### Steps to run:
 Step 1: Crete virutal environment using ```python -m venv env```
 

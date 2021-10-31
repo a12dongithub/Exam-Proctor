@@ -30,15 +30,18 @@ The COVID-19 pandemic has seen the rapid but sometimes controversial take-up of 
 - Used pre-trained-CNN to detect 128 facial keypoints
 - Predict mouth opening or close by setting threshold distance
 
+<img src="image/mouth.gif" width="400" height="300">
+
 #### Distraction Detector
 - Used pre-trained-CNN to detect 128 facial keypoints
 - Use Mutual PNP algorithm to detect alignment of head
 - If head is aligned more than 45* in either direction, candidate is distracted
 
 
-
+Below are the steps to run, AutoProctor.
 Subset of files are present in AutoProctor directory, because of github file size limit.
 
+Download all files from here https://drive.google.com/drive/folders/19NqlxuyvP2zRhPk53FGF-imhWS8rDwxl
 ### Steps to run:
 Step 1: Crete virutal environment using ```python -m venv env```
 
@@ -67,7 +70,6 @@ Step 3: ```python privacy_face_blur.py ```
 
 ### Flowchart of working
 <img src="image/flowchar_taskman.png" width="600" height="400">
-
 
 
 
